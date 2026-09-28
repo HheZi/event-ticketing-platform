@@ -16,9 +16,8 @@ public class Buyer extends User {
     @EmbeddedId
     private BuyerId id;
 
-    public Buyer(BuyerId id, String username, String password) {
+    public Buyer(String username, String password) {
         super(username, password);
-        this.id = id;
     }
 
     private Buyer() {

@@ -16,9 +16,8 @@ public class VenueManager extends User {
     @EmbeddedId
     private VenueManagerId id;
 
-    public VenueManager(VenueManagerId id, String name, String password) {
+    public VenueManager(String name, String password) {
         super(name, password);
-        this.id = id;
     }
 
     private VenueManager() {

@@ -16,9 +16,8 @@ public class Organizer extends User {
     @EmbeddedId
     private OrganizerId id;
 
-    public Organizer(OrganizerId id, String username, String password) {
+    public Organizer(String username, String password) {
         super(username, password);
-        this.id = id;
     }
 
     private Organizer() {

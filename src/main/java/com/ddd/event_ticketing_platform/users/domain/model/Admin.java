@@ -16,9 +16,8 @@ public class Admin extends User {
     @EmbeddedId
     private AdminId id;
 
-    public Admin(AdminId id, String username, String password) {
+    public Admin(String username, String password) {
         super(username, password);
-        this.id = id;
     }
 
     private Admin() {
