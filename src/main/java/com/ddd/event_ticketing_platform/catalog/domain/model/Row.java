@@ -8,13 +8,17 @@ import java.util.List;
 @ValueObject
 public class Row {
 
-    private final String label;
+    private String label;
 
-    private final List<SeatLabel> seatLabels;
+    private List<SeatLabel> seatLabels;
 
     public Row(String sectionCode, String label, Integer seatNumbers) {
         this.label = label;
         this.seatLabels = generateSeatLabels(sectionCode, label, seatNumbers);
+    }
+
+    private Row() {
+
     }
 
     private static List<SeatLabel> generateSeatLabels(

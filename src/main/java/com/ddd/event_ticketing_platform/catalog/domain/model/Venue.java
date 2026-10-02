@@ -5,12 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import org.jmolecules.ddd.annotation.Identity;
 
 import java.util.List;
 
 @Entity
 public class Venue {
 
+    @Identity
     @EmbeddedId
     private VenueId id;
 

@@ -7,19 +7,23 @@ import java.util.List;
 @ValueObject
 public non-sealed class ReservedSection implements Section {
 
-    private final SectionId id;
+    private SectionId id;
 
-    private final String name;
+    private String name;
 
-    private final String code;
+    private String code;
 
-    private final List<Row> rows;
+    private List<Row> rows;
 
     public ReservedSection(String name, String code, List<Row> rows) {
         this.id = SectionId.generate();
         this.name = name;
         this.code = code;
         this.rows = rows;
+    }
+
+    private ReservedSection() {
+
     }
 
     @Override

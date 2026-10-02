@@ -5,16 +5,20 @@ import org.jmolecules.ddd.annotation.ValueObject;
 @ValueObject
 public class SeatingLayout {
 
-    private final SeatingLayoutId id;
+    private SeatingLayoutId id;
 
-    private final String name;
+    private String name;
 
-    private final Section section;
+    private Section section;
 
     public SeatingLayout(String name, Section section) {
         this.id = SeatingLayoutId.generate();
         this.name = name;
         this.section = section;
+    }
+
+    private SeatingLayout() {
+
     }
 
     public SeatingLayoutId id() {
