@@ -32,8 +32,8 @@ public class Venue {
     private Venue() {
     }
 
-    public void addSeatingLayouts(List<SeatingLayout> seatingLayouts) {
-        this.seatingLayouts.addAll(seatingLayouts);
+    public void addSeatingLayout(SeatingLayout seatingLayout) {
+        this.seatingLayouts.add(seatingLayout);
     }
 
     public VenueId id() {
