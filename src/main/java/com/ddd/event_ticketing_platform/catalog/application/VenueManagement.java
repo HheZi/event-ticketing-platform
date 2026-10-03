@@ -1,7 +1,7 @@
 package com.ddd.event_ticketing_platform.catalog.application;
 
 import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLayoutCommand;
-import com.ddd.event_ticketing_platform.catalog.application.command.CreateSectionCommand;
+import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLayoutCommand.SectionInfo;
 import com.ddd.event_ticketing_platform.catalog.application.command.CreateVenueCommand;
 import com.ddd.event_ticketing_platform.catalog.application.exception.UnknowSectionType;
 import com.ddd.event_ticketing_platform.catalog.application.exception.VenueIsNotFound;
@@ -35,19 +35,20 @@ public class VenueManagement {
         Venue venue = venues.findById(venueId)
                 .orElseThrow(() -> new VenueIsNotFound(venueId));
 
-        CreateSectionCommand sectionCommand = command.createSectionCommand();
+        SectionInfo sectionInfo = command.sectionInfo();
 
         Section section;
-        if (sectionCommand.type() == CreateSectionCommand.SectionType.RESERVED) {
-            List<Row> rows = sectionCommand.rows().stream()
-                    .map(row -> new Row(sectionCommand.code(), row.label(), row.seatNumbers()))
-                    .toList();
+        switch (sectionInfo.type()) {
+            case RESERVED -> {
+                List<Row> rows = sectionInfo.rows().stream()
+                        .map(row -> new Row(sectionInfo.code(), row.label(), row.seatNumbers()))
+                        .toList();
 
-            section = new ReservedSection(sectionCommand.name(), sectionCommand.code(), rows);
-        } else if (sectionCommand.type() == CreateSectionCommand.SectionType.GENERAL_ADMISSION) {
-            section = new GeneralAdmissionSection(sectionCommand.name(), sectionCommand.code(), sectionCommand.capacity());
-        } else {
-            throw new UnknowSectionType();
+                section = new ReservedSection(sectionInfo.name(), sectionInfo.code(), rows);
+            }
+            case GENERAL_ADMISSION ->
+                    section = new GeneralAdmissionSection(sectionInfo.name(), sectionInfo.code(), sectionInfo.capacity());
+            case null, default -> throw new UnknowSectionType();
         }
 
         SeatingLayout seatingLayout = new SeatingLayout(command.name(), section);
