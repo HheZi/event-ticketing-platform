@@ -1,6 +1,6 @@
 package com.ddd.event_ticketing_platform.catalog.application.exception;
 
-import com.ddd.event_ticketing_platform.catalog.domain.model.VenueId;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 
 public class VenueIsNotFound extends RuntimeException {
     public VenueIsNotFound(VenueId venueId) {

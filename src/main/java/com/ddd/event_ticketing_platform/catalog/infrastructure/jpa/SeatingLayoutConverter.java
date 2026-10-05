@@ -1,6 +1,6 @@
 package com.ddd.event_ticketing_platform.catalog.infrastructure.jpa;
 
-import com.ddd.event_ticketing_platform.catalog.domain.model.SeatingLayout;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayout;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import tools.jackson.core.type.TypeReference;

@@ -5,8 +5,8 @@ import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLa
 import com.ddd.event_ticketing_platform.catalog.application.command.CreateVenueCommand;
 import com.ddd.event_ticketing_platform.catalog.application.exception.UnknowSectionType;
 import com.ddd.event_ticketing_platform.catalog.application.exception.VenueIsNotFound;
-import com.ddd.event_ticketing_platform.catalog.domain.model.*;
-import com.ddd.event_ticketing_platform.catalog.domain.repository.VenueRepository;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.*;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.repository.VenueRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

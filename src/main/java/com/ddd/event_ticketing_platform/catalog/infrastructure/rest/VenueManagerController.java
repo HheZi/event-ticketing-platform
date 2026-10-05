@@ -2,8 +2,8 @@ package com.ddd.event_ticketing_platform.catalog.infrastructure.rest;
 
 import com.ddd.event_ticketing_platform.catalog.application.VenueManagement;
 import com.ddd.event_ticketing_platform.catalog.application.command.CreateVenueCommand;
-import com.ddd.event_ticketing_platform.catalog.domain.model.SeatingLayoutId;
-import com.ddd.event_ticketing_platform.catalog.domain.model.VenueId;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.request.AddSeatingLayoutRequest;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.request.CreateVenueRequest;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.response.SeatingLayoutIdResponse;

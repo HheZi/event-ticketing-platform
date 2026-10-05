@@ -1,4 +1,4 @@
-package com.ddd.event_ticketing_platform.catalog.domain.model;
+package com.ddd.event_ticketing_platform.catalog.domain.venue.model;
 
 import org.jmolecules.ddd.annotation.ValueObject;
 
