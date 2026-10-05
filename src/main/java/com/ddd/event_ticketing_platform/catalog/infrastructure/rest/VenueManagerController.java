@@ -32,7 +32,7 @@ public class VenueManagerController {
         VenueId venueId =
                 venueManagement.createVenue(new CreateVenueCommand(request.getName(), request.getAddress()));
 
-        return new VenueIdResponse(venueId.id());
+        return new VenueIdResponse(venueId.venueId());
     }
 
     @PutMapping("/{venueId}")
@@ -43,7 +43,7 @@ public class VenueManagerController {
         SeatingLayoutId seatingLayoutId =
                 venueManagement.addSeatingLayout(new VenueId(venueId), request.toCommand());
 
-        return new SeatingLayoutIdResponse(seatingLayoutId.id());
+        return new SeatingLayoutIdResponse(seatingLayoutId.seatingLayoutId());
     }
 
 }

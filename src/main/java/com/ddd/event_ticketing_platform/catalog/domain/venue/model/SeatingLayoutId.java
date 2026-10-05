@@ -5,7 +5,7 @@ import org.jmolecules.ddd.annotation.ValueObject;
 import java.util.UUID;
 
 @ValueObject
-public record SeatingLayoutId(UUID id) {
+public record SeatingLayoutId(UUID seatingLayoutId) {
     public static SeatingLayoutId generate() {
         return new SeatingLayoutId(UUID.randomUUID());
     }
