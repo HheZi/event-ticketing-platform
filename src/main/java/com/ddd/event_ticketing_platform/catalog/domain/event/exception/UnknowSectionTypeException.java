@@ -1,7 +1,7 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.exception;
 
-public class UnknowSectionType extends RuntimeException {
-    public UnknowSectionType() {
+public class UnknowSectionTypeException extends RuntimeException {
+    public UnknowSectionTypeException() {
         super("Unknow section type");
     }
 }

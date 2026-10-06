@@ -3,8 +3,8 @@ package com.ddd.event_ticketing_platform.catalog.application;
 import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLayoutCommand;
 import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLayoutCommand.SectionInfo;
 import com.ddd.event_ticketing_platform.catalog.application.command.CreateVenueCommand;
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.UnknowSectionType;
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.VenueIsNotFound;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.UnknowSectionTypeException;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.exception.VenueNotFoundException;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.*;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.repository.VenueRepository;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class VenueManagement {
     @Transactional
     public SeatingLayoutId addSeatingLayout(VenueId venueId, AddSeatingLayoutCommand command) {
         Venue venue = venues.findById(venueId)
-                .orElseThrow(() -> new VenueIsNotFound(venueId));
+                .orElseThrow(() -> new VenueNotFoundException(venueId));
 
         SectionInfo sectionInfo = command.sectionInfo();
 
@@ -48,7 +48,7 @@ public class VenueManagement {
             }
             case GENERAL_ADMISSION ->
                     section = new GeneralAdmissionSection(sectionInfo.name(), sectionInfo.code(), sectionInfo.capacity());
-            case null, default -> throw new UnknowSectionType();
+            case null, default -> throw new UnknowSectionTypeException();
         }
 
         SeatingLayout seatingLayout = new SeatingLayout(command.name(), section);
