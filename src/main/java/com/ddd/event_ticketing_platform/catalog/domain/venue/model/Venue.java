@@ -1,6 +1,6 @@
 package com.ddd.event_ticketing_platform.catalog.domain.venue.model;
 
-import com.ddd.event_ticketing_platform.catalog.domain.venue.exception.SeatingLayoutNotFoundException;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.exception.SeatingLayoutNotFound;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.jpa.SeatingLayoutConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -57,6 +57,6 @@ public class Venue {
         return this.seatingLayouts
                 .stream().filter(seatingLayout -> seatingLayout.id().equals(layoutId))
                 .findAny()
-                .orElseThrow(() -> new SeatingLayoutNotFoundException(layoutId));
+                .orElseThrow(() -> new SeatingLayoutNotFound(layoutId));
     }
 }

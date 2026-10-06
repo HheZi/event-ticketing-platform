@@ -2,13 +2,13 @@ package com.ddd.event_ticketing_platform.catalog.application;
 
 import com.ddd.event_ticketing_platform.catalog.application.command.AddSessionToEventCommand;
 import com.ddd.event_ticketing_platform.catalog.application.command.CreateEventCommand;
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.EventNotFoundException;
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.TicketsNotCoveringsAllSectionsException;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.EventNotFound;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.TicketsNotCoveringsAllSections;
 import com.ddd.event_ticketing_platform.catalog.domain.event.model.Event;
 import com.ddd.event_ticketing_platform.catalog.domain.event.model.EventId;
 import com.ddd.event_ticketing_platform.catalog.domain.event.model.SessionId;
 import com.ddd.event_ticketing_platform.catalog.domain.event.repository.EventRepository;
-import com.ddd.event_ticketing_platform.catalog.domain.venue.exception.VenueNotFoundException;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.exception.VenueNotFound;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.*;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.repository.VenueRepository;
 import org.jmolecules.ddd.annotation.Service;
@@ -67,7 +67,7 @@ public class EventManagement {
         VenueId venueId = command.venueId();
 
         Venue venue = venues
-                .findById(venueId).orElseThrow(() -> new VenueNotFoundException(venueId));
+                .findById(venueId).orElseThrow(() -> new VenueNotFound(venueId));
 
         SeatingLayout seatingLayout = venue.seatingLayout(command.seatingLayoutId());
 
@@ -79,12 +79,12 @@ public class EventManagement {
                 .allMatch(sectionIds::contains);
 
         if (!areTicketsCoverAllSections) {
-            throw new TicketsNotCoveringsAllSectionsException();
+            throw new TicketsNotCoveringsAllSections();
         }
     }
 
     private @NonNull Event getEvent(EventId eventId) {
-        return events.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
+        return events.findById(eventId).orElseThrow(() -> new EventNotFound(eventId));
     }
 
 }

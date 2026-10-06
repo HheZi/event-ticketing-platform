@@ -2,7 +2,7 @@ package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
 import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus;
 import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublished;
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublicsSessionException;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublicsSession;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.*;
@@ -53,11 +53,11 @@ public class Session extends AbstractAggregateRoot<Session> {
 
     public void publish() {
         if (this.status != SessionStatus.DRAFT) {
-            throw new CannotPublicsSessionException("Session is not draft");
+            throw new CannotPublicsSession("Session is not draft");
         }
 
         if (ticketTypes.isEmpty()) {
-            throw new CannotPublicsSessionException("Ticket types are empty");
+            throw new CannotPublicsSession("Ticket types are empty");
         }
 
         this.status = SessionStatus.PUBLISHED;

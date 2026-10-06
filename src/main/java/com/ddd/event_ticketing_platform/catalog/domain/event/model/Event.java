@@ -1,6 +1,6 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.SessionNotFoundException;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.SessionNotFound;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.CascadeType;
@@ -27,7 +27,7 @@ public class Event extends AbstractAggregateRoot<Event> {
     private String category;
     @OneToMany(mappedBy = "event",
             cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Session> sessions = new ArrayList<>();
+    private final List<Session> sessions = new ArrayList<>();
 
     public Event(String name, String description, String category) {
         this.name = name;
@@ -79,7 +79,7 @@ public class Event extends AbstractAggregateRoot<Event> {
     public Session session(SessionId sessionId) {
         return sessions.stream().filter(session -> session.id().equals(sessionId))
                 .findAny()
-                .orElseThrow(() -> new SessionNotFoundException(sessionId));
+                .orElseThrow(() -> new SessionNotFound(sessionId));
     }
 
 }
