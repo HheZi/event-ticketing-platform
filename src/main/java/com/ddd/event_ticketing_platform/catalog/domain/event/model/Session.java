@@ -1,16 +1,21 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
+import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublishedEvent;
 import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublicsSessionException;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SectionId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.*;
 import org.jmolecules.ddd.annotation.Identity;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-public class Session {
+public class Session extends AbstractAggregateRoot<Session> {
 
     @Identity
     @EmbeddedId
@@ -46,6 +51,22 @@ public class Session {
 
     }
 
+    public void publish(Set<SectionId> sessionIds) {
+        if (this.status != SessionStatus.DRAFT) {
+            throw new CannotPublicsSessionException("Session is not draft");
+        }
+
+        if (ticketTypes.isEmpty()) {
+            throw new CannotPublicsSessionException("Ticket types are empty");
+        }
+
+        validateTicketTypesCoverAllSections(sessionIds);
+
+        this.status = SessionStatus.PUBLISHED;
+
+        registerEvent(new SessionPublishedEvent(this.id));
+    }
+
     public SessionId id() {
         return id;
     }
@@ -76,6 +97,15 @@ public class Session {
 
     public List<TicketType> getTicketTypes() {
         return ticketTypes;
+    }
+
+    private void validateTicketTypesCoverAllSections(Set<SectionId> sectionIds) {
+        boolean ticketTypesCoverAllSections = this.ticketTypes.stream().map(TicketType::sectionId)
+                .allMatch(sectionIds::contains);
+
+        if (ticketTypesCoverAllSections) {
+            throw new CannotPublicsSessionException("Session is not covering all sections");
+        }
     }
 
 }

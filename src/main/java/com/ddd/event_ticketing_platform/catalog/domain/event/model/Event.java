@@ -1,7 +1,8 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
-import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.SessionNotFoundException;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
+import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SectionId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @AggregateRoot
@@ -48,6 +51,18 @@ public class Event extends AbstractAggregateRoot<Event> {
                 this, venueId, seatingLayoutId,
                 startTime, salesStart, salesEnd, ticketTypes
         ));
+    }
+
+    public void publishSession(SessionId sessionId, Set<SectionId> sessionIds) {
+        Optional<Session> sessionOptional = sessions.stream().filter(session -> session.id().equals(sessionId))
+                .findAny();
+
+        if (sessionOptional.isEmpty()) {
+            throw new SessionNotFoundException(sessionId);
+        }
+
+        Session session = sessionOptional.get();
+        session.publish(sessionIds);
     }
 
     public EventId id() {
