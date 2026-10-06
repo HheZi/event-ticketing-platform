@@ -4,7 +4,6 @@ import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus
 import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublished;
 import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublicsSessionException;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
-import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SectionId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.*;
 import org.jmolecules.ddd.annotation.Identity;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Session extends AbstractAggregateRoot<Session> {
@@ -53,7 +51,7 @@ public class Session extends AbstractAggregateRoot<Session> {
 
     }
 
-    public void publish(Set<SectionId> sessionIds) {
+    public void publish() {
         if (this.status != SessionStatus.DRAFT) {
             throw new CannotPublicsSessionException("Session is not draft");
         }
@@ -61,8 +59,6 @@ public class Session extends AbstractAggregateRoot<Session> {
         if (ticketTypes.isEmpty()) {
             throw new CannotPublicsSessionException("Ticket types are empty");
         }
-
-        validateTicketTypesCoverAllSections(sessionIds);
 
         this.status = SessionStatus.PUBLISHED;
 
@@ -99,15 +95,6 @@ public class Session extends AbstractAggregateRoot<Session> {
 
     public List<TicketType> getTicketTypes() {
         return ticketTypes;
-    }
-
-    private void validateTicketTypesCoverAllSections(Set<SectionId> sectionIds) {
-        boolean ticketTypesCoverAllSections = this.ticketTypes.stream().map(TicketType::sectionId)
-                .allMatch(sectionIds::contains);
-
-        if (ticketTypesCoverAllSections) {
-            throw new CannotPublicsSessionException("Session is not covering all sections");
-        }
     }
 
 }

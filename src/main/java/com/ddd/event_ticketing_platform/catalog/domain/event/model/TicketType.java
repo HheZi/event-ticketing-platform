@@ -22,28 +22,21 @@ public class TicketType {
     private Integer maxPreOrder;
 
     public TicketType(
-            Session session, String name, SectionId sectionId,
+            String name, SectionId sectionId,
             BigDecimal basePrice, Integer maxPreOrder
     ) {
-        this.session = session;
         this.name = name;
         this.sectionId = sectionId;
         this.basePrice = basePrice;
         this.maxPreOrder = maxPreOrder;
     }
 
-    public TicketType(
-            Session session, String name,
-            SectionId sectionId, BigDecimal basePrice
-    ) {
-        this.session = session;
-        this.name = name;
-        this.sectionId = sectionId;
-        this.basePrice = basePrice;
-    }
-
     private TicketType() {
 
+    }
+
+    protected void setSession(Session session) {
+        this.session = session;
     }
 
     public TicketTypeId id() {
