@@ -1,7 +1,7 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
-import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublished;
 import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus;
+import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublished;
 import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublicsSessionException;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SectionId;
@@ -45,6 +45,8 @@ public class Session extends AbstractAggregateRoot<Session> {
         this.salesEnd = salesEnd;
         this.status = SessionStatus.DRAFT;
         this.ticketTypes = ticketTypes;
+
+        this.ticketTypes.forEach(ticketType -> ticketType.setSession(this));
     }
 
     private Session() {

@@ -10,6 +10,7 @@ import com.ddd.event_ticketing_platform.catalog.domain.venue.repository.VenueRep
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,23 +36,23 @@ public class VenueManagement {
         Venue venue = venues.findById(venueId)
                 .orElseThrow(() -> new VenueNotFoundException(venueId));
 
-        SectionInfo sectionInfo = command.sectionInfo();
+        List<Section> sections = new ArrayList<>(command.sectionInfos().size());
+        for (SectionInfo sectionInfo : command.sectionInfos()) {
+            switch (sectionInfo.type()) {
+                case RESERVED -> {
+                    List<Row> rows = sectionInfo.rows().stream()
+                            .map(row -> new Row(sectionInfo.code(), row.label(), row.seatNumbers()))
+                            .toList();
 
-        Section section;
-        switch (sectionInfo.type()) {
-            case RESERVED -> {
-                List<Row> rows = sectionInfo.rows().stream()
-                        .map(row -> new Row(sectionInfo.code(), row.label(), row.seatNumbers()))
-                        .toList();
-
-                section = new ReservedSection(sectionInfo.name(), sectionInfo.code(), rows);
+                    sections.add(new ReservedSection(sectionInfo.name(), sectionInfo.code(), rows));
+                }
+                case GENERAL_ADMISSION ->
+                        sections.add(new GeneralAdmissionSection(sectionInfo.name(), sectionInfo.code(), sectionInfo.capacity()));
+                case null, default -> throw new UnknowSectionTypeException();
             }
-            case GENERAL_ADMISSION ->
-                    section = new GeneralAdmissionSection(sectionInfo.name(), sectionInfo.code(), sectionInfo.capacity());
-            case null, default -> throw new UnknowSectionTypeException();
         }
 
-        SeatingLayout seatingLayout = new SeatingLayout(command.name(), section);
+        SeatingLayout seatingLayout = new SeatingLayout(command.name(), sections);
 
         venue.addSeatingLayout(seatingLayout);
 

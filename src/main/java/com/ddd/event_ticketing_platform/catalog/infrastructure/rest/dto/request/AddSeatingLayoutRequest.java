@@ -5,6 +5,7 @@ import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLa
 import com.ddd.event_ticketing_platform.catalog.application.command.AddSeatingLayoutCommand.SectionInfo.RowLabelSeatNumber;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -15,11 +16,15 @@ public class AddSeatingLayoutRequest {
     private String name;
 
     @Valid
-    @NotNull(message = "Section should be specified")
-    private SectionInfoRequest section;
+    @NotNull(message = "Sections should be specified")
+    @NotEmpty(message = "Sections should not be empty")
+    private List<SectionInfoRequest> sections;
 
     public AddSeatingLayoutCommand toCommand() {
-        return new AddSeatingLayoutCommand(name, section.toSectionInfo());
+        List<SectionInfo> sectionInfos = sections.stream().map(SectionInfoRequest::toSectionInfo)
+                .toList();
+
+        return new AddSeatingLayoutCommand(name, sectionInfos);
     }
 
 

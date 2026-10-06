@@ -2,6 +2,8 @@ package com.ddd.event_ticketing_platform.catalog.domain.venue.model;
 
 import org.jmolecules.ddd.annotation.ValueObject;
 
+import java.util.List;
+
 @ValueObject
 public class SeatingLayout {
 
@@ -9,12 +11,12 @@ public class SeatingLayout {
 
     private String name;
 
-    private Section section;
+    private List<Section> sections;
 
-    public SeatingLayout(String name, Section section) {
+    public SeatingLayout(String name, List<Section> sections) {
         this.id = SeatingLayoutId.generate();
         this.name = name;
-        this.section = section;
+        this.sections = sections;
     }
 
     private SeatingLayout() {
@@ -25,11 +27,12 @@ public class SeatingLayout {
         return id;
     }
 
-    public Section section() {
-        return section;
+    public List<Section> sections() {
+        return sections;
     }
 
     public String name() {
         return name;
     }
+
 }

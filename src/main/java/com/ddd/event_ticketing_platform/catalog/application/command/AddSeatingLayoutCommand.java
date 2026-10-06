@@ -2,7 +2,7 @@ package com.ddd.event_ticketing_platform.catalog.application.command;
 
 import java.util.List;
 
-public record AddSeatingLayoutCommand(String name, SectionInfo sectionInfo) {
+public record AddSeatingLayoutCommand(String name, List<SectionInfo> sectionInfos) {
 
     public record SectionInfo(
             SectionInfo.SectionType type, String name,
