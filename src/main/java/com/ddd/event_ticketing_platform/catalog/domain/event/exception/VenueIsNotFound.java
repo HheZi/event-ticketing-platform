@@ -1,4 +1,4 @@
-package com.ddd.event_ticketing_platform.catalog.application.exception;
+package com.ddd.event_ticketing_platform.catalog.domain.event.exception;
 
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 
