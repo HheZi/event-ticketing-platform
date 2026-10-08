@@ -11,8 +11,8 @@ import com.ddd.event_ticketing_platform.catalog.domain.event.repository.EventRep
 import com.ddd.event_ticketing_platform.catalog.domain.venue.exception.VenueNotFound;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.*;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.repository.VenueRepository;
-import org.jmolecules.ddd.annotation.Service;
 import org.jspecify.annotations.NonNull;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
