@@ -60,6 +60,8 @@ public class EventManagement {
 
         event.publishSession(sessionId);
 
+        events.save(event);
+
         return sessionId;
     }
 
@@ -68,6 +70,8 @@ public class EventManagement {
         Event event = getEvent(eventId);
 
         event.cancelSession(sessionId);
+
+        events.save(event);
 
         return sessionId;
     }
