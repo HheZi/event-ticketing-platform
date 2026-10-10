@@ -7,6 +7,7 @@ import com.ddd.event_ticketing_platform.catalog.domain.event.model.SessionId;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.request.AddSessionRequest;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.request.CreateEventRequest;
 import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.response.EventIdResponse;
+import com.ddd.event_ticketing_platform.catalog.infrastructure.rest.dto.response.SessionIdResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -35,14 +36,14 @@ public class EventManagerController {
     }
 
     @PutMapping("/{eventId}")
-    public EventIdResponse addSession(
+    public SessionIdResponse addSession(
             @PathVariable("eventId") Long eventId,
             @Valid @RequestBody AddSessionRequest request
     ) {
-        EventId id =
+        SessionId id =
                 eventManagement.addSessionToEvent(new EventId(eventId), request.toCommand());
 
-        return new EventIdResponse(id.eventId());
+        return new SessionIdResponse(id.sessionId());
     }
 
     @PutMapping("/{eventId}/sessions/{sessionId}/publish")
@@ -51,7 +52,7 @@ public class EventManagerController {
             @PathVariable("sessionId") Long sessionId
     ) {
         SessionId id =
-                eventManagement.publishSession(new EventId(eventId), new SessionId(sessionId));
+                eventManagement.publishSession(new SessionId(sessionId));
 
         return new SessionId(id.sessionId());
     }
@@ -62,7 +63,7 @@ public class EventManagerController {
             @PathVariable("sessionId") Long sessionId
     ) {
         SessionId id =
-                eventManagement.cancelSession(new EventId(eventId), new SessionId(sessionId));
+                eventManagement.cancelSession(new SessionId(sessionId));
 
         return new SessionId(id.sessionId());
     }

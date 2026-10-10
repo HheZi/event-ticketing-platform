@@ -1,16 +1,9 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
-import com.ddd.event_ticketing_platform.catalog.domain.event.exception.SessionNotFound;
-import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
-import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +17,9 @@ public class Event {
     private String name;
     private String description;
     private String category;
-    @OneToMany(mappedBy = "event",
-            cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<Session> sessions = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "event_session", joinColumns = @JoinColumn(name = "event_id"))
+    private final List<Long> sessionsIds = new ArrayList<>();
 
     public Event(String name, String description, String category) {
         this.name = name;
@@ -38,27 +31,9 @@ public class Event {
 
     }
 
-    public void addSession(
-            VenueId venueId, SeatingLayoutId seatingLayoutId,
-            Instant startTime, Instant salesStart, Instant salesEnd,
-            List<TicketType> ticketTypes
-    ) {
-        sessions.add(new Session(
-                this, venueId, seatingLayoutId,
-                startTime, salesStart, salesEnd, ticketTypes
-        ));
-    }
-
-    public void publishSession(SessionId sessionId) {
-        Session session = session(sessionId);
-
-        session.publish();
-    }
-
-    public void cancelSession(SessionId sessionId) {
-        Session session = session(sessionId);
-
-        session.cancel();
+    public void addSession(Session session) {
+        session.setEvent(this);
+        sessionsIds.add(session.id().sessionId());
     }
 
     public EventId id() {
@@ -77,14 +52,8 @@ public class Event {
         return category;
     }
 
-    public List<Session> sessions() {
-        return sessions;
-    }
-
-    public Session session(SessionId sessionId) {
-        return sessions.stream().filter(session -> session.id().equals(sessionId))
-                .findAny()
-                .orElseThrow(() -> new SessionNotFound(sessionId));
+    public List<Long> sessionsIds() {
+        return sessionsIds;
     }
 
 }

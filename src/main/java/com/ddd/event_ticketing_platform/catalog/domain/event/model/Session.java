@@ -37,7 +37,7 @@ public class Session extends AbstractAggregateRoot<Session> {
     private List<TicketType> ticketTypes;
 
     public Session(
-            Event event, VenueId venueId, SeatingLayoutId seatingLayoutId,
+            VenueId venueId, SeatingLayoutId seatingLayoutId,
             Instant startTime, Instant salesStart, Instant salesEnd,
             List<TicketType> ticketTypes
     ) {
@@ -121,6 +121,10 @@ public class Session extends AbstractAggregateRoot<Session> {
 
     public List<TicketType> getTicketTypes() {
         return ticketTypes;
+    }
+
+    protected void setEvent(Event event) {
+        this.event = event;
     }
 
 }

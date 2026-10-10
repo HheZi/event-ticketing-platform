@@ -1,5 +1,6 @@
 package com.ddd.event_ticketing_platform.catalog.application.command;
 
+import com.ddd.event_ticketing_platform.catalog.domain.event.model.Session;
 import com.ddd.event_ticketing_platform.catalog.domain.event.model.TicketType;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SectionId;
@@ -17,7 +18,12 @@ public record AddSessionToEventCommand(
         List<TicketTypeInfo> tickets
 ) {
 
-    public List<TicketType> toTicketTypes() {
+    public Session toSession() {
+        return new Session(venueId, seatingLayoutId,
+                startTime, salesStart, salesEnd, toTicketTypes());
+    }
+
+    private List<TicketType> toTicketTypes() {
         return tickets.stream()
                 .map(TicketTypeInfo::toTicketType)
                 .collect(Collectors.toList());
