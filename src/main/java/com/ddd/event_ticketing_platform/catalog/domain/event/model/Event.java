@@ -56,6 +56,12 @@ public class Event extends AbstractAggregateRoot<Event> {
         session.publish();
     }
 
+    public void cancelSession(SessionId sessionId) {
+        Session session = session(sessionId);
+
+        session.cancel();
+    }
+
     public EventId id() {
         return id;
     }

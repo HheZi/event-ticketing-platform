@@ -63,6 +63,15 @@ public class EventManagement {
         return sessionId;
     }
 
+    @Transactional
+    public SessionId cancelSession(EventId eventId, SessionId sessionId) {
+        Event event = getEvent(eventId);
+
+        event.cancelSession(sessionId);
+
+        return sessionId;
+    }
+
     private void verifyVenue(AddSessionToEventCommand command) {
         VenueId venueId = command.venueId();
 

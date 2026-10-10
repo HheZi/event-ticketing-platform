@@ -1,7 +1,9 @@
 package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
 import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus;
+import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionCancelled;
 import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublished;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotCancelSession;
 import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublishSession;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
@@ -63,6 +65,16 @@ public class Session extends AbstractAggregateRoot<Session> {
         this.status = SessionStatus.PUBLISHED;
 
         registerEvent(new SessionPublished(this.id));
+    }
+
+    public void cancel() {
+        if (this.status == SessionStatus.COMPLETED) {
+            throw new CannotCancelSession("Status of session is completed");
+        }
+
+        this.status = SessionStatus.CANCELLED;
+
+        registerEvent(new SessionCancelled(this.id));
     }
 
     public SessionId id() {

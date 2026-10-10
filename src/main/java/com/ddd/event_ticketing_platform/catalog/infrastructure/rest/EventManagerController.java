@@ -56,4 +56,15 @@ public class EventManagerController {
         return new SessionId(id.sessionId());
     }
 
+    @PutMapping("/{eventId}/sessions/{sessionId}/cancel")
+    public SessionId cancelSession(
+            @PathVariable("eventId") Long eventId,
+            @PathVariable("sessionId") Long sessionId
+    ) {
+        SessionId id =
+                eventManagement.cancelSession(new EventId(eventId), new SessionId(sessionId));
+
+        return new SessionId(id.sessionId());
+    }
+
 }
