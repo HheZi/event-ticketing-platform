@@ -2,9 +2,11 @@ package com.ddd.event_ticketing_platform.catalog.domain.event.model;
 
 import com.ddd.event_ticketing_platform.catalog.domain.event.enums.SessionStatus;
 import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionCancelled;
+import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionOnSale;
 import com.ddd.event_ticketing_platform.catalog.domain.event.event.SessionPublished;
 import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotCancelSession;
 import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPublishSession;
+import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotStartSales;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.*;
@@ -77,6 +79,16 @@ public class Session extends AbstractAggregateRoot<Session> {
         this.status = SessionStatus.CANCELLED;
 
         registerEvent(new SessionCancelled(id()));
+    }
+
+    public void startSale() {
+        if (this.status != SessionStatus.PUBLISHED) {
+            throw new CannotStartSales("Session is not published");
+        }
+
+        this.status = SessionStatus.ON_SALE;
+
+        registerEvent(new SessionOnSale(id()));
     }
 
     public SessionId id() {
