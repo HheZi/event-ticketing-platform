@@ -8,6 +8,7 @@ import com.ddd.event_ticketing_platform.catalog.domain.event.exception.CannotPub
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.SeatingLayoutId;
 import com.ddd.event_ticketing_platform.catalog.domain.venue.model.VenueId;
 import jakarta.persistence.*;
+import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -15,6 +16,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
+@AggregateRoot
 public class Session extends AbstractAggregateRoot<Session> {
 
     @Identity
@@ -64,7 +66,7 @@ public class Session extends AbstractAggregateRoot<Session> {
 
         this.status = SessionStatus.PUBLISHED;
 
-        registerEvent(new SessionPublished(this.id));
+        registerEvent(new SessionPublished(id()));
     }
 
     public void cancel() {
@@ -74,7 +76,7 @@ public class Session extends AbstractAggregateRoot<Session> {
 
         this.status = SessionStatus.CANCELLED;
 
-        registerEvent(new SessionCancelled(this.id));
+        registerEvent(new SessionCancelled(id()));
     }
 
     public SessionId id() {

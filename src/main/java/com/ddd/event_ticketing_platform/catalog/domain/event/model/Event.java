@@ -9,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
-import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @Entity
 @AggregateRoot
-public class Event extends AbstractAggregateRoot<Event> {
+public class Event {
 
     @Identity
     @EmbeddedId
