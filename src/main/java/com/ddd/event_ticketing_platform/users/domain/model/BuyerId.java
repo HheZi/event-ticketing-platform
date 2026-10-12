@@ -5,5 +5,5 @@ import org.jmolecules.ddd.annotation.ValueObject;
 
 @ValueObject
 @Embeddable
-public record BuyerId(Long id) {
+public record BuyerId(Long buyerId) {
 }
