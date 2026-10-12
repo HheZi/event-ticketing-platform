@@ -41,7 +41,6 @@ public class Session extends AbstractAggregateRoot<Session> {
             Instant startTime, Instant salesStart, Instant salesEnd,
             List<TicketType> ticketTypes
     ) {
-        this.event = event;
         this.venueId = venueId;
         this.seatingLayoutId = seatingLayoutId;
         this.startTime = startTime;
