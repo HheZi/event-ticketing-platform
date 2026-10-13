@@ -1,11 +1,7 @@
 package com.ddd.event_ticketing_platform.ordering.domain.model;
 
-import com.ddd.event_ticketing_platform.catalog.domain.event.model.SessionId;
 import com.ddd.event_ticketing_platform.users.domain.model.BuyerId;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
 
@@ -22,10 +18,37 @@ public class Cart {
     @Embedded
     private BuyerId buyerId;
 
-    @Embedded
-    private SessionId sessionId;
-
     @OneToMany(mappedBy = "cart", orphanRemoval = true)
     private List<CartItem> cartItems;
 
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<Hold> holds;
+
+    public Cart(BuyerId buyerId, List<CartItem> cartItems, List<Hold> holds) {
+        this.buyerId = buyerId;
+        this.cartItems = cartItems;
+        this.holds = holds;
+
+        this.holds.forEach(hold -> hold.setCart(this));
+    }
+
+    private Cart() {
+
+    }
+
+    public CartId id() {
+        return id;
+    }
+
+    public BuyerId buyerId() {
+        return buyerId;
+    }
+
+    public List<CartItem> cartItems() {
+        return cartItems;
+    }
+
+    public List<Hold> holds() {
+        return holds;
+    }
 }
