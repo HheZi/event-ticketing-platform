@@ -13,3 +13,6 @@ spring:
 logging:
   level:
     sql: DEBUG
+app:
+  payment:
+    stub: success
