@@ -1,6 +1,7 @@
 package com.ddd.event_ticketing_platform.ordering.domain.model;
 
 import com.ddd.event_ticketing_platform.catalog.domain.event.model.SessionId;
+import com.ddd.event_ticketing_platform.ordering.domain.enums.HoldStatus;
 import com.ddd.event_ticketing_platform.users.domain.model.BuyerId;
 import jakarta.persistence.*;
 
